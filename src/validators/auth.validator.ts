@@ -13,3 +13,10 @@ export const registerSchema = z.object({
     .regex(/[A-Z]/, "Password MUST contain at least one uppercase letter")
     .regex(/[0-9]/, "Password MUST contain atleast one number."),
 });
+
+export type RegisterInput = z.infer<typeof registerSchema>;
+
+export const loginSchema = z.object({
+  email: z.string().email("inavlid email.").trim(),
+  password: z.string().min(8),
+});

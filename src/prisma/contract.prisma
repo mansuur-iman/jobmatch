@@ -1,0 +1,36 @@
+// use prisma-8
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  username  String   @unique
+  password  String
+
+  createdAt TimestamptzString @default(now())
+  updatedAt temporal.updatedAtString()
+
+  profile Profile?
+}
+
+model Profile {
+  id               String   @id @default(uuid())
+  userId           String   @unique
+
+  skills           String[]
+  university       String
+  certifications   String[]
+  projects         Json
+  degree           String
+  workEnvironment  String
+  workLocation     String
+  roles            String[]
+  languages        String[]
+  experience       Json
+  jobLevel         String
+  availability     String
+
+  createdAt        TimestamptzString @default(now())
+  updatedAt        temporal.updatedAtString()
+
+  user User @relation(fields: [userId], references: [id])
+}

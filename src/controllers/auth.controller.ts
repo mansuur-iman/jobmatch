@@ -21,7 +21,7 @@ export async function register(
     const existingUser = await db.orm.public.User.where({ email }).first();
 
     if (existingUser) {
-      return res.status(400).json({ message: "User already exists." });
+      return res.status(403).json({ message: "User already exists." });
     }
 
     //hashing the user password//
@@ -66,7 +66,7 @@ export const login = async (
     const user = await db.orm.public.User.where({ email }).first();
 
     if (!user) {
-      return res.status(400).json({ error: "User not exist." });
+      return res.status(404).json({ error: "User not exist." });
     }
 
     //compare pasword//

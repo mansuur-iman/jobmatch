@@ -17,6 +17,6 @@ export const registerSchema = z.object({
 export type RegisterInput = z.infer<typeof registerSchema>;
 
 export const loginSchema = z.object({
-  email: z.string().email("inavlid email.").trim(),
+  email: z.string().email("inavlid email.").trim().toLowerCase(),
   password: z.string().min(8),
 });

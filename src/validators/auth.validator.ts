@@ -20,3 +20,5 @@ export const loginSchema = z.object({
   email: z.string().email("inavlid email.").trim().toLowerCase(),
   password: z.string().min(8),
 });
+
+export type loginInput = z.infer<typeof loginSchema>;

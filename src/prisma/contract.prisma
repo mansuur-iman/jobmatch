@@ -25,7 +25,7 @@ model Profile {
   workLocation     String
   roles            String[]
   languages        String[]
-  experience       Json
+  experience       Json?
   jobLevel         String
   availability     String
 

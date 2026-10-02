@@ -9,6 +9,7 @@ export const createProfile = async (
 ) => {
   try {
     const { id } = req.params;
+
     //validate user id//
     if (typeof id !== "string") {
       return res.status(400).json({ error: "Invalid user id." });

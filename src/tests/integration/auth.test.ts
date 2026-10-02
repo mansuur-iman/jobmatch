@@ -1,10 +1,14 @@
 import { app } from "../../app";
 import request from "supertest";
 import { db } from "../../prisma/db";
+import { jest } from "@jest/globals";
+
+jest.setTimeout(15000);
 
 describe("authentication routes", () => {
   beforeEach(async () => {
     // Clear the users table before each test
+    await db.orm.public.Profile.where((p) => p.id.isNotNull()).deleteAll();
     await db.orm.public.User.where((u) => u.id.isNotNull()).deleteAll();
   });
   it("successfully registers user", async () => {

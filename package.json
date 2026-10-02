@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "test": "NODE_ENV=test NODE_OPTIONS='--experimental-vm-modules' jest",
+    "test": "NODE_ENV=test NODE_OPTIONS='--experimental-vm-modules' jest --runInBand",
     "test:watch": "NODE_ENV=test NODE_OPTIONS='--experimental-vm-modules' jest --watch",
     "postinstall": "prisma skills sync || exit 0",
     "contract:emit": "prisma contract emit"

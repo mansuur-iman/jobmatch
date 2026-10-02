@@ -8,6 +8,7 @@ jest.setTimeout(15000);
 describe("profile routes", () => {
   beforeEach(async () => {
     // Clear the users table before each test
+    await db.orm.public.Profile.where((p) => p.id.isNotNull()).deleteAll();
     await db.orm.public.User.where((u) => u.id.isNotNull()).deleteAll();
   });
   it("successfully creates a profile", async () => {

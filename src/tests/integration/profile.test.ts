@@ -194,6 +194,69 @@ describe("profile routes", () => {
       .set("Authorization", `Bearer ${token}`);
     expect(getProfile.statusCode).toBe(400);
   });
+
+  it("sucessfully update profile data", async () => {
+    //register user//
+    const userData = {
+      email: "example12@gmail.com",
+      username: "Example12",
+      password: "Example0000",
+    };
+    const res = await request(app).post("/api/v1/auth/register").send(userData);
+    expect(res.statusCode).toBe(201);
+    expect(res.body.user?.id).toBeDefined();
+
+    //login user//
+    const login = await request(app)
+      .post("/api/v1/auth/login")
+      .send({ email: userData?.email, password: userData?.password });
+
+    expect(login.statusCode).toBe(200);
+    const token = login.body?.token;
+    expect(token).toBeDefined();
+
+    //grab user id//
+    const userId = login.body?.user?.id;
+    expect(userId).toBeDefined();
+
+    //create profile//
+    const profileData = {
+      skills: ["JavaScript", "TypeScript"],
+      experience: { years: 5, companies: ["Company A", "Company B"] },
+      university: "Example University",
+      degree: "Bachelor's in Computer Science",
+      certifications: ["AWS Certified Developer"],
+      projects: { project1: "Project A", project2: "Project B" },
+      workEnvironment: "Remote",
+      languages: ["English", "Spanish"],
+      workLocation: "USA",
+      jobLevel: "Senior",
+      availability: "Full-time",
+      roles: ["Frontend Developer", "Backend Developer"],
+    };
+
+    const profile = await request(app)
+      .post(`/api/v1/profile/${userId}`)
+      .set("Authorization", `Bearer ${token}`)
+      .send(profileData);
+    expect(profile.statusCode).toBe(201);
+    expect(profile.body.profile?.userId).toBe(userId);
+
+    //update profile//
+    const updatedProfileData = {
+      skills: ["Python", "Django"],
+    };
+
+    const updateProfile = await request(app)
+      .patch(`/api/v1/profile/${userId}`)
+      .set("Authorization", `Bearer ${token}`)
+      .send(updatedProfileData);
+
+    expect(updateProfile.statusCode).toBe(200);
+    expect(updateProfile.body.profile?.skills).toEqual(
+      updatedProfileData.skills,
+    );
+  });
 });
 
 afterAll(async () => {

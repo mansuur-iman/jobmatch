@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'cbe86d9549a1d036e5031f8eb9b3e94b70744867e3e65bf6d2b0f3281417d81d'>;
+  StorageHashBase<'11202595b8555f347d8ac4d2ab7ee9a8976b02bbd333a8ecbcaad716646e0d64'>;
 export type ExecutionHash =
   ExecutionHashBase<'2e2fea8b89726c26656c9fe2b5a6da9953ee2b89bb318012b0c2d280581b761e'>;
 export type ProfileHash =
@@ -255,7 +255,7 @@ export type FieldOutputTypes = {
       readonly certifications: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly degree: CodecTypes['pg/text@1']['output'];
-      readonly experience: CodecTypes['pg/json@1']['output'];
+      readonly experience: CodecTypes['pg/json@1']['output'] | null;
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly jobLevel: CodecTypes['pg/text@1']['output'];
       readonly languages: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
@@ -285,7 +285,7 @@ export type FieldInputTypes = {
       readonly certifications: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly degree: CodecTypes['pg/text@1']['input'];
-      readonly experience: CodecTypes['pg/json@1']['input'];
+      readonly experience: CodecTypes['pg/json@1']['input'] | null;
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly jobLevel: CodecTypes['pg/text@1']['input'];
       readonly languages: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
@@ -315,7 +315,7 @@ export type StorageColumnTypes = {
       readonly certifications: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly degree: CodecTypes['pg/text@1']['output'];
-      readonly experience: CodecTypes['pg/json@1']['output'];
+      readonly experience: CodecTypes['pg/json@1']['output'] | null;
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly jobLevel: CodecTypes['pg/text@1']['output'];
       readonly languages: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
@@ -345,7 +345,7 @@ export type StorageColumnInputTypes = {
       readonly certifications: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly degree: CodecTypes['pg/text@1']['input'];
-      readonly experience: CodecTypes['pg/json@1']['input'];
+      readonly experience: CodecTypes['pg/json@1']['input'] | null;
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly jobLevel: CodecTypes['pg/text@1']['input'];
       readonly languages: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
@@ -375,7 +375,7 @@ export namespace Models {
     certifications: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
     createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
     degree: CodecTypes['pg/text@1']['output'];
-    experience: CodecTypes['pg/json@1']['output'];
+    experience: CodecTypes['pg/json@1']['output'] | null;
     id: CodecTypes['pg/text@1']['output'];
     jobLevel: CodecTypes['pg/text@1']['output'];
     languages: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
@@ -453,7 +453,7 @@ type ContractBase = Omit<
                 readonly experience: {
                   readonly nativeType: 'json';
                   readonly codecId: 'pg/json@1';
-                  readonly nullable: false;
+                  readonly nullable: true;
                 };
                 readonly id: {
                   readonly nativeType: 'text';
@@ -612,7 +612,7 @@ type ContractBase = Omit<
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
               readonly experience: {
-                readonly nullable: false;
+                readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/json@1' };
               };
               readonly id: {

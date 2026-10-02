@@ -49,7 +49,7 @@
                 }
               },
               "experience": {
-                "nullable": false,
+                "nullable": true,
                 "type": {
                   "codecId": "pg/json@1",
                   "kind": "scalar"
@@ -358,7 +358,7 @@
                 "experience": {
                   "codecId": "pg/json@1",
                   "nativeType": "json",
-                  "nullable": false
+                  "nullable": true
                 },
                 "id": {
                   "codecId": "pg/text@1",
@@ -514,7 +514,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "cbe86d9549a1d036e5031f8eb9b3e94b70744867e3e65bf6d2b0f3281417d81d"
+    "storageHash": "11202595b8555f347d8ac4d2ab7ee9a8976b02bbd333a8ecbcaad716646e0d64"
   },
   "execution": {
     "executionHash": "2e2fea8b89726c26656c9fe2b5a6da9953ee2b89bb318012b0c2d280581b761e",

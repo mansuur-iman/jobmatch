@@ -4,8 +4,8 @@ export const profileSchema = z.object({
   skills: z.array(
     z
       .string()
-      .min(2, "Minimum skills length is 2 characters.")
-      .max(20, "Maximu skills length is 20 characters."),
+      .min(2, "Minimum skills length is 2 .")
+      .max(20, "Maximum skills length is 20."),
   ),
   university: z.string(),
   degree: z.string(),
@@ -22,7 +22,7 @@ export const profileSchema = z.object({
   jobLevel: z.string(),
   availability: z.string(),
   roles: z.array(z.string()),
-  certifications: z.array(z.string()).optional(),
+  certifications: z.array(z.string()),
 });
 
 export type profileInput = z.infer<typeof profileSchema>;

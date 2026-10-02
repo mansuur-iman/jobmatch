@@ -8,8 +8,8 @@ import { authenticateToken } from "../middleware/auth.middleware";
 
 const profileRouter = Router();
 
-profileRouter.get("/profile:id", authenticateToken, getProfile);
-profileRouter.post("/profile:id", authenticateToken, createProfile);
-profileRouter.patch("/profile:id", authenticateToken, updateProfile);
+profileRouter.get("/:id", authenticateToken, getProfile);
+profileRouter.post("/:id", authenticateToken, createProfile);
+profileRouter.patch("/:id", authenticateToken, updateProfile);
 
 export default profileRouter;

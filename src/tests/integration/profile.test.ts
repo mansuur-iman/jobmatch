@@ -2,8 +2,15 @@ import { app } from "../../app";
 import request from "supertest";
 import { db } from "../../prisma/db";
 import { jest } from "@jest/globals";
+import { createAuthenticatedUser } from "../../helpers/test-user";
 
 jest.setTimeout(15000);
+
+const userData = {
+  email: "examplemail@gmaiil.com",
+  password: "Myemail11",
+  username: "Example01",
+};
 
 describe("profile routes", () => {
   beforeEach(async () => {
@@ -12,27 +19,7 @@ describe("profile routes", () => {
     await db.orm.public.User.where((u) => u.id.isNotNull()).deleteAll();
   });
   it("successfully creates a profile", async () => {
-    //register user//
-    const userData = {
-      email: "example1@gmail.com",
-      username: "Example0",
-      password: "Qubyy1234",
-    };
-    const res = await request(app).post("/api/v1/auth/register").send(userData);
-    expect(res.statusCode).toBe(201);
-    expect(res.body.user?.id).toBeDefined();
-
-    //login user//
-    const login = await request(app)
-      .post("/api/v1/auth/login")
-      .send({ email: userData?.email, password: userData?.password });
-    expect(login.statusCode).toBe(200);
-    const token = login.body?.token;
-    expect(token).toBeDefined();
-
-    //grab user id//
-    const userId = login.body?.user?.id;
-    expect(userId).toBeDefined();
+    const { userId, token } = await createAuthenticatedUser(userData);
 
     //create profile//
     const profileData = {
@@ -60,28 +47,7 @@ describe("profile routes", () => {
     expect(profile.body.profile?.userId).toBe(userId);
   });
   it("fails to create profile with invalid data", async () => {
-    //register user//
-    const userData = {
-      email: "myemail1@gmail.com",
-      username: "Uvvyjg12",
-      password: "Qubyy1234",
-    };
-    const res = await request(app).post("/api/v1/auth/register").send(userData);
-    expect(res.statusCode).toBe(201);
-    expect(res.body.user?.id).toBeDefined();
-
-    //login user//
-    const login = await request(app)
-      .post("/api/v1/auth/login")
-      .send({ email: userData?.email, password: userData?.password });
-
-    expect(login.statusCode).toBe(200);
-    const token = login.body?.token;
-    expect(token).toBeDefined();
-
-    //grab user id//
-    const userId = login.body?.user?.id;
-    expect(userId).toBeDefined();
+    const { userId, token } = await createAuthenticatedUser(userData);
 
     //create profile with invalid data//
     const invalidProfileData = {
@@ -108,29 +74,7 @@ describe("profile routes", () => {
   });
 
   it("successfully returns profile data", async () => {
-    //register user//
-    const userData = {
-      email: "johnyy1@gmail.com",
-      password: "Johnnnyy1122",
-      username: "john",
-    };
-
-    const res = await request(app).post("/api/v1/auth/register").send(userData);
-    expect(res.statusCode).toBe(201);
-    expect(res.body.user?.username).toBe(userData.username);
-
-    //login user//
-    const login = await request(app)
-      .post("/api/v1/auth/login")
-      .send({ email: userData?.email, password: userData?.password });
-
-    //grab user id//
-    const userId = login?.body?.user.id;
-    expect(userId).toBeDefined();
-
-    //grap token//
-    const token = login?.body?.token;
-    expect(token).toBeDefined();
+    const { userId, token } = await createAuthenticatedUser(userData);
 
     //create profile//
     const profileData = {
@@ -164,29 +108,7 @@ describe("profile routes", () => {
   });
 
   it("fails to return profile data for non-existent user", async () => {
-    //register user//
-    const userData = {
-      email: "example12@gmail.com",
-      username: "Example12",
-      password: "Example0000",
-    };
-
-    const res = await request(app).post("/api/v1/auth/register").send(userData);
-    expect(res.statusCode).toBe(201);
-    expect(res.body.user?.id).toBeDefined();
-
-    //login user//
-    const login = await request(app)
-      .post("/api/v1/auth/login")
-      .send({ email: userData?.email, password: userData?.password });
-
-    expect(login.statusCode).toBe(200);
-    const token = login.body?.token;
-    expect(token).toBeDefined();
-
-    //grab user id//
-    const userId = login.body?.user?.id;
-    expect(userId).toBeDefined();
+    const { token } = await createAuthenticatedUser(userData);
 
     //get profile for non-existent user//
     const getProfile = await request(app)
@@ -196,28 +118,7 @@ describe("profile routes", () => {
   });
 
   it("sucessfully update profile data", async () => {
-    //register user//
-    const userData = {
-      email: "example12@gmail.com",
-      username: "Example12",
-      password: "Example0000",
-    };
-    const res = await request(app).post("/api/v1/auth/register").send(userData);
-    expect(res.statusCode).toBe(201);
-    expect(res.body.user?.id).toBeDefined();
-
-    //login user//
-    const login = await request(app)
-      .post("/api/v1/auth/login")
-      .send({ email: userData?.email, password: userData?.password });
-
-    expect(login.statusCode).toBe(200);
-    const token = login.body?.token;
-    expect(token).toBeDefined();
-
-    //grab user id//
-    const userId = login.body?.user?.id;
-    expect(userId).toBeDefined();
+    const { userId, token } = await createAuthenticatedUser(userData);
 
     //create profile//
     const profileData = {

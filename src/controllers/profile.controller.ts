@@ -43,12 +43,12 @@ export const createProfile = async (
       jobLevel,
       availability,
       roles,
+      projects,
     } = result.data;
 
     const profile = await db.orm.public.Profile.create({
       userId: id,
       skills,
-      experience,
       university,
       degree,
       certifications,
@@ -58,8 +58,9 @@ export const createProfile = async (
       jobLevel,
       availability,
       roles,
+      projects,
+      ...(experience !== undefined && { experience }),
     });
-
     //give resonse to the client//
     return res
       .status(201)

@@ -10,6 +10,7 @@ model User {
   updatedAt temporal.updatedAtString()
 
   profile Profile?
+  jobAnalysis JobAnalysis[]
 }
 
 model Profile {
@@ -33,4 +34,17 @@ model Profile {
   updatedAt        temporal.updatedAtString()
 
   user User @relation(fields: [userId], references: [id])
+}
+
+model JobAnalysis{
+  id    String  @id  @default(uuid())
+
+  jobText    String
+  result     Json
+  
+  userId   String
+  user     User   @relation(fields: [userId], references: [id])
+
+  createdAt   TimestamptzString  @default(now())
+  updatedAt   temporal.updatedAtString()
 }

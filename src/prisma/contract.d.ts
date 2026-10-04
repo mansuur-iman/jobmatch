@@ -34,9 +34,9 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'11202595b8555f347d8ac4d2ab7ee9a8976b02bbd333a8ecbcaad716646e0d64'>;
+  StorageHashBase<'dc8b892823622a46d14b4bbcddaf3c337fcd8b6f7f8e201a232f849d5ce8ec48'>;
 export type ExecutionHash =
-  ExecutionHashBase<'2e2fea8b89726c26656c9fe2b5a6da9953ee2b89bb318012b0c2d280581b761e'>;
+  ExecutionHashBase<'db2f6aae39fa45c4f19fc4fb27ae2ac4323630b35c232495c0b540870712660c'>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
 
@@ -250,6 +250,14 @@ type DefaultLiteralValue<CodecId extends string, Encoded> = CodecId extends keyo
 
 export type FieldOutputTypes = {
   readonly public: {
+    readonly JobAnalysis: {
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly jobText: CodecTypes['pg/text@1']['output'];
+      readonly result: CodecTypes['pg/json@1']['output'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly userId: CodecTypes['pg/text@1']['output'];
+    };
     readonly Profile: {
       readonly availability: CodecTypes['pg/text@1']['output'];
       readonly certifications: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
@@ -280,6 +288,14 @@ export type FieldOutputTypes = {
 };
 export type FieldInputTypes = {
   readonly public: {
+    readonly JobAnalysis: {
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly jobText: CodecTypes['pg/text@1']['input'];
+      readonly result: CodecTypes['pg/json@1']['input'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly userId: CodecTypes['pg/text@1']['input'];
+    };
     readonly Profile: {
       readonly availability: CodecTypes['pg/text@1']['input'];
       readonly certifications: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
@@ -310,6 +326,14 @@ export type FieldInputTypes = {
 };
 export type StorageColumnTypes = {
   readonly public: {
+    readonly JobAnalysis: {
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly jobText: CodecTypes['pg/text@1']['output'];
+      readonly result: CodecTypes['pg/json@1']['output'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly userId: CodecTypes['pg/text@1']['output'];
+    };
     readonly Profile: {
       readonly availability: CodecTypes['pg/text@1']['output'];
       readonly certifications: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
@@ -340,6 +364,14 @@ export type StorageColumnTypes = {
 };
 export type StorageColumnInputTypes = {
   readonly public: {
+    readonly JobAnalysis: {
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly jobText: CodecTypes['pg/text@1']['input'];
+      readonly result: CodecTypes['pg/json@1']['input'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly userId: CodecTypes['pg/text@1']['input'];
+    };
     readonly Profile: {
       readonly availability: CodecTypes['pg/text@1']['input'];
       readonly certifications: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
@@ -370,6 +402,16 @@ export type StorageColumnInputTypes = {
 };
 
 export namespace Models {
+  export type public_JobAnalysis = {
+    createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    id: CodecTypes['pg/text@1']['output'];
+    jobText: CodecTypes['pg/text@1']['output'];
+    result: CodecTypes['pg/json@1']['output'];
+    updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    userId: CodecTypes['pg/text@1']['output'];
+    user: public_User;
+    readonly [RelationKeys]?: 'user';
+  };
   export type public_Profile = {
     availability: CodecTypes['pg/text@1']['output'];
     certifications: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
@@ -397,13 +439,15 @@ export namespace Models {
     password: CodecTypes['pg/text@1']['output'];
     updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
     username: CodecTypes['pg/text@1']['output'];
+    jobAnalysis: public_JobAnalysis[];
     profile: public_Profile | null;
-    readonly [RelationKeys]?: 'profile';
+    readonly [RelationKeys]?: 'jobAnalysis' | 'profile';
   };
 }
 
 export declare const models: {
   public: {
+    JobAnalysis: Models.public_JobAnalysis;
     Profile: Models.public_Profile;
     User: Models.public_User;
   };
@@ -427,6 +471,65 @@ type ContractBase = Omit<
         readonly kind: 'postgres-schema';
         readonly entries: {
           readonly table: {
+            readonly JobAnalysis: {
+              columns: {
+                readonly createdAt: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly id: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly jobText: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly result: {
+                  readonly nativeType: 'json';
+                  readonly codecId: 'pg/json@1';
+                  readonly nullable: false;
+                };
+                readonly updatedAt: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                };
+                readonly userId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'JobAnalysis_userId_idx_a489d58a';
+                  readonly prefix: 'JobAnalysis_userId_idx';
+                  readonly columns: readonly ['userId'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'JobAnalysis';
+                    readonly columns: readonly ['userId'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'User';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
             readonly Profile: {
               columns: {
                 readonly availability: {
@@ -582,6 +685,10 @@ type ContractBase = Omit<
   readonly target: 'postgres';
   readonly targetFamily: 'sql';
   readonly roots: {
+    readonly JobAnalysis: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'JobAnalysis';
+    };
     readonly Profile: { readonly namespace: 'public' & NamespaceId; readonly model: 'Profile' };
     readonly User: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
   };
@@ -589,6 +696,63 @@ type ContractBase = Omit<
     readonly namespaces: {
       readonly public: {
         readonly models: {
+          readonly JobAnalysis: {
+            readonly fields: {
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly jobText: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly result: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/json@1' };
+              };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+            };
+            readonly relations: {
+              readonly user: {
+                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['userId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'JobAnalysis';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly createdAt: { readonly column: 'createdAt' };
+                readonly id: { readonly column: 'id' };
+                readonly jobText: { readonly column: 'jobText' };
+                readonly result: { readonly column: 'result' };
+                readonly updatedAt: { readonly column: 'updatedAt' };
+                readonly userId: { readonly column: 'userId' };
+              };
+            };
+          };
           readonly Profile: {
             readonly fields: {
               readonly availability: {
@@ -734,6 +898,17 @@ type ContractBase = Omit<
               };
             };
             readonly relations: {
+              readonly jobAnalysis: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'JobAnalysis';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['userId'];
+                };
+              };
               readonly profile: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -789,6 +964,23 @@ type ContractBase = Omit<
     readonly executionHash: ExecutionHash;
     readonly mutations: {
       readonly defaults: readonly [
+        {
+          readonly onCreate: { readonly id: 'uuidv4'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'JobAnalysis';
+            readonly field: 'id';
+            readonly namespace: 'public';
+          };
+        },
+        {
+          readonly onCreate: { readonly id: 'timestampNow'; readonly kind: 'generator' };
+          readonly onUpdate: { readonly id: 'timestampNow'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'JobAnalysis';
+            readonly field: 'updatedAt';
+            readonly namespace: 'public';
+          };
+        },
         {
           readonly onCreate: { readonly id: 'uuidv4'; readonly kind: 'generator' };
           readonly ref: {

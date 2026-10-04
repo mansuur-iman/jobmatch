@@ -1,0 +1,165 @@
+[
+  {
+    "id": "table.JobAnalysis",
+    "label": "Create table \"JobAnalysis\"",
+    "summary": "Creates table \"JobAnalysis\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "JobAnalysis"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"JobAnalysis\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"JobAnalysis\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"JobAnalysis\"",
+        "sql": "CREATE TABLE \"public\".\"JobAnalysis\" (\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"id\" text NOT NULL,\n  \"jobText\" text NOT NULL,\n  \"result\" json NOT NULL,\n  \"updatedAt\" timestamptz NOT NULL,\n  \"userId\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"JobAnalysis\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"JobAnalysis\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "alterNullability.dropNotNull.Profile.experience",
+    "label": "Drop NOT NULL on \"Profile\".\"experience\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "experience",
+        "table": "Profile"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"experience\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Profile",
+          "experience"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop NOT NULL on \"experience\"",
+        "sql": "ALTER TABLE \"public\".\"Profile\" ALTER COLUMN \"experience\" DROP NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"experience\" is nullable",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"is_nullable\" = $4)) AS \"result\"",
+        "params": [
+          "public",
+          "Profile",
+          "experience",
+          "YES"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.JobAnalysis.JobAnalysis_userId_idx_a489d58a",
+    "label": "Create index \"JobAnalysis_userId_idx_a489d58a\" on \"JobAnalysis\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "JobAnalysis_userId_idx_a489d58a",
+        "table": "JobAnalysis"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"JobAnalysis_userId_idx_a489d58a\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"JobAnalysis_userId_idx_a489d58a\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"JobAnalysis_userId_idx_a489d58a\"",
+        "sql": "CREATE INDEX \"JobAnalysis_userId_idx_a489d58a\" ON \"public\".\"JobAnalysis\" (\"userId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"JobAnalysis_userId_idx_a489d58a\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"JobAnalysis_userId_idx_a489d58a\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.JobAnalysis.JobAnalysis_userId_fkey",
+    "label": "Add foreign key \"JobAnalysis_userId_fkey\" on \"JobAnalysis\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "JobAnalysis_userId_fkey",
+        "table": "JobAnalysis"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"JobAnalysis_userId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "JobAnalysis_userId_fkey",
+          "public",
+          "\"public\".\"JobAnalysis\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"JobAnalysis_userId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"JobAnalysis\"\nADD CONSTRAINT \"JobAnalysis_userId_fkey\"\nFOREIGN KEY (\"userId\")\nREFERENCES \"public\".\"User\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"JobAnalysis_userId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "JobAnalysis_userId_fkey",
+          "public",
+          "\"public\".\"JobAnalysis\""
+        ]
+      }
+    ]
+  }
+]

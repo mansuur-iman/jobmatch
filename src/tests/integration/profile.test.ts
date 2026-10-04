@@ -12,6 +12,21 @@ const userData = {
   username: "Example01",
 };
 
+const profileData = {
+  skills: ["JavaScript", "TypeScript"],
+  experience: { years: 5, companies: ["Company A", "Company B"] },
+  university: "Example University",
+  degree: "Bachelor's in Computer Science",
+  certifications: ["AWS Certified Developer"],
+  projects: { project1: "Project A", project2: "Project B" },
+  workEnvironment: "Remote",
+  languages: ["English", "Spanish"],
+  workLocation: "USA",
+  jobLevel: "Senior",
+  availability: "Full-time",
+  roles: ["Frontend Developer", "Backend Developer"],
+};
+
 describe("profile routes", () => {
   beforeEach(async () => {
     // Clear the users table before each test
@@ -22,25 +37,12 @@ describe("profile routes", () => {
     const { userId, token } = await createAuthenticatedUser(userData);
 
     //create profile//
-    const profileData = {
-      skills: ["JavaScript", "TypeScript"],
-      experience: { years: 5, companies: ["Company A", "Company B"] },
-      university: "Example University",
-      degree: "Bachelor's in Computer Science",
-      certifications: ["AWS Certified Developer"],
-      projects: { project1: "Project A", project2: "Project B" },
-      workEnvironment: "Remote",
-      languages: ["English", "Spanish"],
-      workLocation: "USA",
-      jobLevel: "Senior",
-      availability: "Full-time",
-      roles: ["Frontend Developer", "Backend Developer"],
-    };
+    const createProfile = profileData;
 
     const profile = await request(app)
       .post(`/api/v1/profile/${userId}`)
       .set("Authorization", `Bearer ${token}`)
-      .send(profileData);
+      .send(createProfile);
 
     //expect profile response//
     expect(profile.statusCode).toBe(201);
@@ -77,25 +79,12 @@ describe("profile routes", () => {
     const { userId, token } = await createAuthenticatedUser(userData);
 
     //create profile//
-    const profileData = {
-      skills: ["JavaScript", "TypeScript"],
-      experience: { years: 5, companies: ["Company A", "Company B"] },
-      university: "Example University",
-      degree: "Bachelor's in Computer Science",
-      certifications: ["AWS Certified Developer"],
-      projects: { project1: "Project A", project2: "Project B" },
-      workEnvironment: "Remote",
-      languages: ["English", "Spanish"],
-      workLocation: "USA",
-      jobLevel: "Senior",
-      availability: "Full-time",
-      roles: ["Frontend Developer", "Backend Developer"],
-    };
+    const createProfile = profileData;
 
     const profile = await request(app)
       .post(`/api/v1/profile/${userId}`)
       .set("Authorization", `Bearer ${token}`)
-      .send(profileData);
+      .send(createProfile);
     expect(profile.statusCode).toBe(201);
     expect(profile.body.profile?.userId).toBe(userId);
 
@@ -121,25 +110,12 @@ describe("profile routes", () => {
     const { userId, token } = await createAuthenticatedUser(userData);
 
     //create profile//
-    const profileData = {
-      skills: ["JavaScript", "TypeScript"],
-      experience: { years: 5, companies: ["Company A", "Company B"] },
-      university: "Example University",
-      degree: "Bachelor's in Computer Science",
-      certifications: ["AWS Certified Developer"],
-      projects: { project1: "Project A", project2: "Project B" },
-      workEnvironment: "Remote",
-      languages: ["English", "Spanish"],
-      workLocation: "USA",
-      jobLevel: "Senior",
-      availability: "Full-time",
-      roles: ["Frontend Developer", "Backend Developer"],
-    };
+    const createProfile = profileData;
 
     const profile = await request(app)
       .post(`/api/v1/profile/${userId}`)
       .set("Authorization", `Bearer ${token}`)
-      .send(profileData);
+      .send(createProfile);
     expect(profile.statusCode).toBe(201);
     expect(profile.body.profile?.userId).toBe(userId);
 

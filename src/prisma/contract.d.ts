@@ -34,9 +34,9 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'dc8b892823622a46d14b4bbcddaf3c337fcd8b6f7f8e201a232f849d5ce8ec48'>;
+  StorageHashBase<'527cc8abf28c9322fe6e40007e3f3a4e3d3c3136a0a8a82e8f0ce77982761ccd'>;
 export type ExecutionHash =
-  ExecutionHashBase<'db2f6aae39fa45c4f19fc4fb27ae2ac4323630b35c232495c0b540870712660c'>;
+  ExecutionHashBase<'11469190c5d4f238a326038e7c1fdc5f2ca4eec11484f72fc874b0ada2c433b6'>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
 
@@ -250,6 +250,25 @@ type DefaultLiteralValue<CodecId extends string, Encoded> = CodecId extends keyo
 
 export type FieldOutputTypes = {
   readonly public: {
+    readonly Job: {
+      readonly aiIndexed: CodecTypes['pg/bool@1']['output'];
+      readonly applyUrl: CodecTypes['pg/text@1']['output'];
+      readonly company: CodecTypes['pg/text@1']['output'];
+      readonly companyLogo: CodecTypes['pg/text@1']['output'];
+      readonly companyWebsite: CodecTypes['pg/text@1']['output'];
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly description: CodecTypes['pg/text@1']['output'];
+      readonly employmentType: CodecTypes['pg/text@1']['output'];
+      readonly externalJobId: CodecTypes['pg/text@1']['output'];
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly location: CodecTypes['pg/text@1']['output'];
+      readonly maxSalary: CodecTypes['pg/int4@1']['output'];
+      readonly minSalary: CodecTypes['pg/int4@1']['output'];
+      readonly postedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly requiredSkills: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
+      readonly title: CodecTypes['pg/text@1']['output'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    };
     readonly JobAnalysis: {
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly id: CodecTypes['pg/text@1']['output'];
@@ -288,6 +307,25 @@ export type FieldOutputTypes = {
 };
 export type FieldInputTypes = {
   readonly public: {
+    readonly Job: {
+      readonly aiIndexed: CodecTypes['pg/bool@1']['input'];
+      readonly applyUrl: CodecTypes['pg/text@1']['input'];
+      readonly company: CodecTypes['pg/text@1']['input'];
+      readonly companyLogo: CodecTypes['pg/text@1']['input'];
+      readonly companyWebsite: CodecTypes['pg/text@1']['input'];
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly description: CodecTypes['pg/text@1']['input'];
+      readonly employmentType: CodecTypes['pg/text@1']['input'];
+      readonly externalJobId: CodecTypes['pg/text@1']['input'];
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly location: CodecTypes['pg/text@1']['input'];
+      readonly maxSalary: CodecTypes['pg/int4@1']['input'];
+      readonly minSalary: CodecTypes['pg/int4@1']['input'];
+      readonly postedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly requiredSkills: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
+      readonly title: CodecTypes['pg/text@1']['input'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
+    };
     readonly JobAnalysis: {
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly id: CodecTypes['pg/text@1']['input'];
@@ -326,6 +364,25 @@ export type FieldInputTypes = {
 };
 export type StorageColumnTypes = {
   readonly public: {
+    readonly Job: {
+      readonly aiIndexed: CodecTypes['pg/bool@1']['output'];
+      readonly applyUrl: CodecTypes['pg/text@1']['output'];
+      readonly company: CodecTypes['pg/text@1']['output'];
+      readonly companyLogo: CodecTypes['pg/text@1']['output'];
+      readonly companyWebsite: CodecTypes['pg/text@1']['output'];
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly description: CodecTypes['pg/text@1']['output'];
+      readonly employmentType: CodecTypes['pg/text@1']['output'];
+      readonly externalJobId: CodecTypes['pg/text@1']['output'];
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly location: CodecTypes['pg/text@1']['output'];
+      readonly maxSalary: CodecTypes['pg/int4@1']['output'];
+      readonly minSalary: CodecTypes['pg/int4@1']['output'];
+      readonly postedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly requiredSkills: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
+      readonly title: CodecTypes['pg/text@1']['output'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    };
     readonly JobAnalysis: {
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly id: CodecTypes['pg/text@1']['output'];
@@ -364,6 +421,25 @@ export type StorageColumnTypes = {
 };
 export type StorageColumnInputTypes = {
   readonly public: {
+    readonly Job: {
+      readonly aiIndexed: CodecTypes['pg/bool@1']['input'];
+      readonly applyUrl: CodecTypes['pg/text@1']['input'];
+      readonly company: CodecTypes['pg/text@1']['input'];
+      readonly companyLogo: CodecTypes['pg/text@1']['input'];
+      readonly companyWebsite: CodecTypes['pg/text@1']['input'];
+      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly description: CodecTypes['pg/text@1']['input'];
+      readonly employmentType: CodecTypes['pg/text@1']['input'];
+      readonly externalJobId: CodecTypes['pg/text@1']['input'];
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly location: CodecTypes['pg/text@1']['input'];
+      readonly maxSalary: CodecTypes['pg/int4@1']['input'];
+      readonly minSalary: CodecTypes['pg/int4@1']['input'];
+      readonly postedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly requiredSkills: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
+      readonly title: CodecTypes['pg/text@1']['input'];
+      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
+    };
     readonly JobAnalysis: {
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly id: CodecTypes['pg/text@1']['input'];
@@ -402,6 +478,26 @@ export type StorageColumnInputTypes = {
 };
 
 export namespace Models {
+  export type public_Job = {
+    aiIndexed: CodecTypes['pg/bool@1']['output'];
+    applyUrl: CodecTypes['pg/text@1']['output'];
+    company: CodecTypes['pg/text@1']['output'];
+    companyLogo: CodecTypes['pg/text@1']['output'];
+    companyWebsite: CodecTypes['pg/text@1']['output'];
+    createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    description: CodecTypes['pg/text@1']['output'];
+    employmentType: CodecTypes['pg/text@1']['output'];
+    externalJobId: CodecTypes['pg/text@1']['output'];
+    id: CodecTypes['pg/text@1']['output'];
+    location: CodecTypes['pg/text@1']['output'];
+    maxSalary: CodecTypes['pg/int4@1']['output'];
+    minSalary: CodecTypes['pg/int4@1']['output'];
+    postedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    requiredSkills: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
+    title: CodecTypes['pg/text@1']['output'];
+    updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
+    readonly [RelationKeys]?: never;
+  };
   export type public_JobAnalysis = {
     createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
     id: CodecTypes['pg/text@1']['output'];
@@ -447,6 +543,7 @@ export namespace Models {
 
 export declare const models: {
   public: {
+    Job: Models.public_Job;
     JobAnalysis: Models.public_JobAnalysis;
     Profile: Models.public_Profile;
     User: Models.public_User;
@@ -471,6 +568,104 @@ type ContractBase = Omit<
         readonly kind: 'postgres-schema';
         readonly entries: {
           readonly table: {
+            readonly Job: {
+              columns: {
+                readonly aiIndexed: {
+                  readonly nativeType: 'bool';
+                  readonly codecId: 'pg/bool@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/bool@1', false>;
+                  };
+                };
+                readonly applyUrl: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly company: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly companyLogo: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly companyWebsite: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly createdAt: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                };
+                readonly description: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly employmentType: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly externalJobId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly id: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly location: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly maxSalary: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                };
+                readonly minSalary: {
+                  readonly nativeType: 'int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                };
+                readonly postedAt: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                };
+                readonly requiredSkills: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly title: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly updatedAt: {
+                  readonly nativeType: 'timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [{ readonly columns: readonly ['externalJobId'] }];
+              indexes: readonly [];
+              foreignKeys: readonly [];
+            };
             readonly JobAnalysis: {
               columns: {
                 readonly createdAt: {
@@ -685,6 +880,7 @@ type ContractBase = Omit<
   readonly target: 'postgres';
   readonly targetFamily: 'sql';
   readonly roots: {
+    readonly Job: { readonly namespace: 'public' & NamespaceId; readonly model: 'Job' };
     readonly JobAnalysis: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'JobAnalysis';
@@ -696,6 +892,112 @@ type ContractBase = Omit<
     readonly namespaces: {
       readonly public: {
         readonly models: {
+          readonly Job: {
+            readonly fields: {
+              readonly aiIndexed: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/bool@1' };
+              };
+              readonly applyUrl: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly company: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly companyLogo: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly companyWebsite: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly description: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly employmentType: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly externalJobId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly location: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly maxSalary: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly minSalary: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly postedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly requiredSkills: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+                readonly many: true;
+              };
+              readonly title: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly updatedAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+            };
+            readonly relations: Record<string, never>;
+            readonly storage: {
+              readonly table: 'Job';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly aiIndexed: { readonly column: 'aiIndexed' };
+                readonly applyUrl: { readonly column: 'applyUrl' };
+                readonly company: { readonly column: 'company' };
+                readonly companyLogo: { readonly column: 'companyLogo' };
+                readonly companyWebsite: { readonly column: 'companyWebsite' };
+                readonly createdAt: { readonly column: 'createdAt' };
+                readonly description: { readonly column: 'description' };
+                readonly employmentType: { readonly column: 'employmentType' };
+                readonly externalJobId: { readonly column: 'externalJobId' };
+                readonly id: { readonly column: 'id' };
+                readonly location: { readonly column: 'location' };
+                readonly maxSalary: { readonly column: 'maxSalary' };
+                readonly minSalary: { readonly column: 'minSalary' };
+                readonly postedAt: { readonly column: 'postedAt' };
+                readonly requiredSkills: { readonly column: 'requiredSkills' };
+                readonly title: { readonly column: 'title' };
+                readonly updatedAt: { readonly column: 'updatedAt' };
+              };
+            };
+          };
           readonly JobAnalysis: {
             readonly fields: {
               readonly createdAt: {
@@ -964,6 +1266,23 @@ type ContractBase = Omit<
     readonly executionHash: ExecutionHash;
     readonly mutations: {
       readonly defaults: readonly [
+        {
+          readonly onCreate: { readonly id: 'uuidv4'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'Job';
+            readonly field: 'id';
+            readonly namespace: 'public';
+          };
+        },
+        {
+          readonly onCreate: { readonly id: 'timestampNow'; readonly kind: 'generator' };
+          readonly onUpdate: { readonly id: 'timestampNow'; readonly kind: 'generator' };
+          readonly ref: {
+            readonly entry: 'Job';
+            readonly field: 'updatedAt';
+            readonly namespace: 'public';
+          };
+        },
         {
           readonly onCreate: { readonly id: 'uuidv4'; readonly kind: 'generator' };
           readonly ref: {

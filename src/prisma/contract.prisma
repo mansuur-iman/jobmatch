@@ -48,3 +48,28 @@ model JobAnalysis{
   createdAt   TimestamptzString  @default(now())
   updatedAt   temporal.updatedAtString()
 }
+
+model Job{
+  id  String  @id  @default(uuid())
+  externalJobId  String   @unique
+  
+  title String
+  description  String
+  location  String
+  applyUrl String
+  employmentType String
+  minSalary Int
+  maxSalary Int
+  requiredSkills String[]
+
+  company String
+  companyLogo String
+  companyWebsite String
+  postedAt DateTime()
+
+  aiIndexed Boolean @default(false)
+
+  createdAt   TimestamptzString  @default(now())
+  updatedAt   temporal.updatedAtString()
+
+}

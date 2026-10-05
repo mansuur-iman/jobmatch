@@ -1,0 +1,83 @@
+[
+  {
+    "id": "table.Job",
+    "label": "Create table \"Job\"",
+    "summary": "Creates table \"Job\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Job"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Job\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Job\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Job\"",
+        "sql": "CREATE TABLE \"public\".\"Job\" (\n  \"aiIndexed\" bool DEFAULT false NOT NULL,\n  \"applyUrl\" text NOT NULL,\n  \"company\" text NOT NULL,\n  \"companyLogo\" text NOT NULL,\n  \"companyWebsite\" text NOT NULL,\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"description\" text NOT NULL,\n  \"employmentType\" text NOT NULL,\n  \"externalJobId\" text NOT NULL,\n  \"id\" text NOT NULL,\n  \"location\" text NOT NULL,\n  \"maxSalary\" int4 NOT NULL,\n  \"minSalary\" int4 NOT NULL,\n  \"postedAt\" timestamptz NOT NULL,\n  \"requiredSkills\" text[] NOT NULL,\n  \"title\" text NOT NULL,\n  \"updatedAt\" timestamptz NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"Job_requiredSkills_elem_not_null_42133848\" CHECK (array_position(\"requiredSkills\", NULL) IS NULL)\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Job\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Job\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.Job.Job_externalJobId_key",
+    "label": "Add unique constraint on \"Job\" (externalJobId)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "Job_externalJobId_key",
+        "table": "Job"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"Job_externalJobId_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Job_externalJobId_key",
+          "public",
+          "\"public\".\"Job\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"Job_externalJobId_key\"",
+        "sql": "ALTER TABLE \"public\".\"Job\" ADD CONSTRAINT \"Job_externalJobId_key\" UNIQUE (\"externalJobId\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"Job_externalJobId_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Job_externalJobId_key",
+          "public",
+          "\"public\".\"Job\""
+        ]
+      }
+    ]
+  }
+]

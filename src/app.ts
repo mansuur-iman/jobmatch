@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 //routes
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/profile", profileRouter);
-app.use("/api/v1/job-analysis", analysisRouter);
+app.use("/api/v1/job", analysisRouter);
 
 //error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {

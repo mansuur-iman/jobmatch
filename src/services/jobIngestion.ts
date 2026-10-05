@@ -17,6 +17,7 @@ const fetchAndStoreJobs = async () => {
       method: "GET",
       headers: {
         "X-RapidAPI-Key": apiKey,
+        "X-RapidAPI-Host": "jsearch.p.rapidapi.com",
       },
     });
 
@@ -35,10 +36,36 @@ const fetchAndStoreJobs = async () => {
     let savedCount = 0;
 
     for (const job of jobList) {
-      //save each job to db//
+      //check if job already exists//
+      const existingJob = await db.orm.public.Job.where({
+        externalJobId: job.job_id,
+      }).first();
 
-      await db.orm.public.Job.create({});
+      if (existingJob) {
+        continue;
+      }
+
+      //create new job in db//
+      await db.orm.public.Job.create({
+        externalJobId: job.job_id,
+        title: job.job_title,
+        description: job.job_description,
+        location: job.job_location,
+        applyUrl: job.job_apply_link,
+        employmentType: job.job_employment_type,
+        minSalary: job.job_min_salary ?? 0,
+        maxSalary: job.job_max_salary ?? 0,
+        requiredSkills: job.required_technologies ?? [],
+        company: job.employer_name,
+        companyLogo: job.employer_logo ?? "",
+        companyWebsite: job.employer_website ?? "",
+        postedAt: Temporal.Instant.from(job.job_posted_at_datetime_utc),
+        aiIndexed: false,
+      });
+      savedCount++;
     }
+
+    console.log(`Suceessfully saved ${savedCount} jobs in db.`);
   } catch (err) {
     console.error("Error while fetching jobs:", err);
   }

@@ -1,6 +1,7 @@
-import { db } from ".././prisma/db";
+import { db } from "../prisma/db";
 import type { Request, Response, NextFunction } from "express";
 import { profileSchema } from "../validators/profile.validator";
+import { generateRecommendations } from "../services/recommender";
 
 export const createProfile = async (
   req: Request,
@@ -8,30 +9,56 @@ export const createProfile = async (
   next: NextFunction,
 ) => {
   try {
+    // 1. Get the authenticated user's ID.
+    const authenticatedUserId = req.user?.userId;
+
+    if (!authenticatedUserId) {
+      return res.status(401).json({
+        error: "Unauthorized user.",
+      });
+    }
+
+    // 2. Ensure the route ID matches the authenticated user.
     const { id } = req.params;
 
-    //validate user id//
-    if (typeof id !== "string") {
-      return res.status(400).json({ error: "Invalid user id." });
+    if (id !== authenticatedUserId) {
+      return res.status(403).json({
+        error: "You cannot create a profile for another user.",
+      });
     }
-    //validate profile data//
+
+    // 3. Validate the incoming profile data.
     const result = profileSchema.safeParse(req.body);
 
     if (!result.success) {
-      return res
-        .status(404)
-        .json({ error: result.error?.flatten().fieldErrors });
+      return res.status(400).json({
+        error: result.error.flatten().fieldErrors,
+      });
     }
 
-    //validate if user exists//
-    const user = await db.orm.public.User.where({ id }).first();
+    // 4. Confirm the user exists.
+    const user = await db.orm.public.User.where({
+      id: authenticatedUserId,
+    }).first();
 
     if (!user) {
-      return res.status(404).json({ error: "User not found." });
+      return res.status(404).json({
+        error: "User not found.",
+      });
     }
 
-    //create profile//
+    // 5. Check whether the profile already exists.
+    const existingProfile = await db.orm.public.Profile.where({
+      userId: authenticatedUserId,
+    }).first();
 
+    if (existingProfile) {
+      return res.status(409).json({
+        error: "Profile already exists. Use the update endpoint.",
+      });
+    }
+
+    // 6. Create the profile.
     const {
       skills,
       experience,
@@ -48,7 +75,7 @@ export const createProfile = async (
     } = result.data;
 
     const profile = await db.orm.public.Profile.create({
-      userId: id,
+      userId: authenticatedUserId,
       skills,
       university,
       degree,
@@ -62,12 +89,19 @@ export const createProfile = async (
       projects,
       ...(experience !== undefined && { experience }),
     });
-    //give resonse to the client//
-    return res
-      .status(201)
-      .json({ message: "Profile created successfully.", profile });
+
+    // 7. Start recommendation generation without waiting for it.
+    void generateRecommendations(authenticatedUserId).catch((err) => {
+      console.error("Background recommendation generation failed:", err);
+    });
+
+    // 8. Return the created profile.
+    return res.status(201).json({
+      message: "Profile created successfully.",
+      profile,
+      recommendationStatus: "processing",
+    });
   } catch (err) {
-    console.error("error in getting profile:", err);
     next(err);
   }
 };

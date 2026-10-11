@@ -35,7 +35,7 @@ export const generateRecommendations = async (userId: string) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ profile, excludeJobIds }),
-    signal: AbortSignal.timeout(30000),
+    signal: AbortSignal.timeout(60000),
   });
 
   if (!response.ok) {
@@ -88,14 +88,14 @@ export const generateRecommendations = async (userId: string) => {
       existingPair?.status === "dismissed" ||
       existingPair?.status === "applied"
     ) {
-      console.warn("Skipping applied or dismiised (user,job) pair");
+      console.warn("Skipping applied or dismissed (user,job) pair");
       continue;
     }
     if (existingPair) {
       //update recommendation score//
       await db.orm.public.Recommendation.where({
         id: existingPair.id,
-      }).upddate({ score });
+      }).update({ score });
     } else {
       //create the recommendation//
       await db.orm.public.Recommendation.create({

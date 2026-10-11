@@ -1,4 +1,4 @@
-import { db } from "../prisma/db";
+import { db } from ".././prisma/db";
 import type { Request, Response, NextFunction } from "express";
 
 export const getRecommendations = async (
@@ -7,50 +7,38 @@ export const getRecommendations = async (
   next: NextFunction,
 ) => {
   try {
-    // 1. Identify the authenticated user.
+    //get authenticated user//
     const userId = req.user?.userId;
-
     if (!userId) {
-      return res.status(401).json({
-        error: "Unauthorized user.",
-      });
+      return res.status(401).json({ error: "Unauthorized user." });
     }
-
-    // 2. Read this user's active recommendations.
-    const recommendations = await db.orm.public.Recommendation.where({
+    //get active recommendations//
+    const activeRecommendations = await db.orm.public.Recommendation.where({
       userId,
       status: "new",
     }).all();
 
-    // 3. Sort by score, highest first.
-    recommendations.sort((a, b) => b.score - a.score);
+    //select top 10 only//
+    const topRecommendations = [...activeRecommendations]
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 10);
 
-    // 4. Select the top 10.
-    const topRecommendations = recommendations.slice(0, 10);
+    //select the jobs//
+    const jobIds = topRecommendations.map((r) => r.jobId);
+    const jobsFound = jobIds.length
+      ? await db.orm.public.Job.where({ id: { in: jobIds } }).all()
+      : [];
 
-    // 5. Load the corresponding job records.
-    const jobs = await Promise.all(
-      topRecommendations.map(async (recommendation) => {
-        const job = await db.orm.public.Job.where({
-          id: recommendation.jobId,
-        }).first();
+    const jobsById = new Map(jobsFound.map((job) => [job.id, job]));
 
-        if (!job) {
-          return null;
-        }
-
-        return {
-          ...job,
-          matchScore: recommendation.score,
-        };
-      }),
-    );
-
-    // 6. Remove missing jobs and respond.
-    return res.status(200).json({
-      recommendations: jobs.filter((job) => job !== null),
+    const recommendations = topRecommendations.flatMap((recommendation) => {
+      const job = jobsById.get(recommendation.jobId);
+      return job ? [{ job, matchScore: recommendation.score }] : [];
     });
+
+    return res.status(200).json(recommendations);
   } catch (err) {
+    console.error("Error in fetching recommendations:", err);
     next(err);
   }
 };

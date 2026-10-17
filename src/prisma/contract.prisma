@@ -11,6 +11,7 @@ model User {
 
   profile Profile?
   jobAnalysis JobAnalysis[]
+  recommendations Recommendation[]
 }
 
 model Profile {
@@ -33,7 +34,7 @@ model Profile {
   createdAt        TimestamptzString @default(now())
   updatedAt        temporal.updatedAtString()
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model JobAnalysis{
@@ -43,7 +44,7 @@ model JobAnalysis{
   result     Json
   
   userId   String
-  user     User   @relation(fields: [userId], references: [id])
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt   TimestamptzString  @default(now())
   updatedAt   temporal.updatedAtString()
@@ -58,18 +59,42 @@ model Job{
   location  String
   applyUrl String
   employmentType String
-  minSalary Int
-  maxSalary Int
+  minSalary Int?
+  maxSalary Int?
   requiredSkills String[]
 
   company String
-  companyLogo String
-  companyWebsite String
-  postedAt DateTime()
+  companyLogo String?
+  companyWebsite String?
+  postedAt DateTime()?
 
   aiIndexed Boolean @default(false)
 
   createdAt   TimestamptzString  @default(now())
   updatedAt   temporal.updatedAtString()
+  
+  recommendations Recommendation[]
+}
 
+model Recommendation{
+  id  String @id  @default(uuid())
+  userId String
+  jobId String
+  score Float
+  status  RecommendationStatus @default(new)
+
+  createdAt   TimestamptzString  @default(now())
+  updatedAt   temporal.updatedAtString()
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job Job @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, jobId])
+  @@index([userId, status, score])
+}
+
+enum RecommendationStatus {
+  new
+  applied
+  dismissed
 }

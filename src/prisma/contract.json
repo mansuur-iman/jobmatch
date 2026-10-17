@@ -16,6 +16,10 @@
       "model": "Profile",
       "namespace": "public"
     },
+    "Recommendation": {
+      "model": "Recommendation",
+      "namespace": "public"
+    },
     "User": {
       "model": "User",
       "namespace": "public"
@@ -24,6 +28,25 @@
   "domain": {
     "namespaces": {
       "public": {
+        "enum": {
+          "RecommendationStatus": {
+            "codecId": "pg/text@1",
+            "members": [
+              {
+                "name": "new",
+                "value": "new"
+              },
+              {
+                "name": "applied",
+                "value": "applied"
+              },
+              {
+                "name": "dismissed",
+                "value": "dismissed"
+              }
+            ]
+          }
+        },
         "models": {
           "Job": {
             "fields": {
@@ -49,14 +72,14 @@
                 }
               },
               "companyLogo": {
-                "nullable": false,
+                "nullable": true,
                 "type": {
                   "codecId": "pg/text@1",
                   "kind": "scalar"
                 }
               },
               "companyWebsite": {
-                "nullable": false,
+                "nullable": true,
                 "type": {
                   "codecId": "pg/text@1",
                   "kind": "scalar"
@@ -105,21 +128,21 @@
                 }
               },
               "maxSalary": {
-                "nullable": false,
+                "nullable": true,
                 "type": {
                   "codecId": "pg/int4@1",
                   "kind": "scalar"
                 }
               },
               "minSalary": {
-                "nullable": false,
+                "nullable": true,
                 "type": {
                   "codecId": "pg/int4@1",
                   "kind": "scalar"
                 }
               },
               "postedAt": {
-                "nullable": false,
+                "nullable": true,
                 "type": {
                   "codecId": "pg/timestamptz-temporal@1",
                   "kind": "scalar"
@@ -148,7 +171,23 @@
                 }
               }
             },
-            "relations": {},
+            "relations": {
+              "recommendations": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "jobId"
+                  ]
+                },
+                "to": {
+                  "model": "Recommendation",
+                  "namespace": "public"
+                }
+              }
+            },
             "storage": {
               "fields": {
                 "aiIndexed": {
@@ -487,6 +526,126 @@
               "table": "Profile"
             }
           },
+          "Recommendation": {
+            "fields": {
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "jobId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "score": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/float8@1",
+                  "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "RecommendationStatus",
+                  "namespaceId": "public",
+                  "plane": "domain"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "userId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "job": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "jobId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Job",
+                  "namespace": "public"
+                }
+              },
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "User",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "createdAt": {
+                  "column": "createdAt"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "jobId": {
+                  "column": "jobId"
+                },
+                "score": {
+                  "column": "score"
+                },
+                "status": {
+                  "column": "status"
+                },
+                "updatedAt": {
+                  "column": "updatedAt"
+                },
+                "userId": {
+                  "column": "userId"
+                }
+              },
+              "namespaceId": "public",
+              "table": "Recommendation"
+            }
+          },
           "User": {
             "fields": {
               "createdAt": {
@@ -563,6 +722,21 @@
                   "model": "Profile",
                   "namespace": "public"
                 }
+              },
+              "recommendations": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
+                },
+                "to": {
+                  "model": "Recommendation",
+                  "namespace": "public"
+                }
               }
             },
             "storage": {
@@ -630,12 +804,12 @@
                 "companyLogo": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
-                  "nullable": false
+                  "nullable": true
                 },
                 "companyWebsite": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
-                  "nullable": false
+                  "nullable": true
                 },
                 "createdAt": {
                   "codecId": "pg/timestamptz-string@1",
@@ -674,17 +848,17 @@
                 "maxSalary": {
                   "codecId": "pg/int4@1",
                   "nativeType": "int4",
-                  "nullable": false
+                  "nullable": true
                 },
                 "minSalary": {
                   "codecId": "pg/int4@1",
                   "nativeType": "int4",
-                  "nullable": false
+                  "nullable": true
                 },
                 "postedAt": {
                   "codecId": "pg/timestamptz-temporal@1",
                   "nativeType": "timestamptz",
-                  "nullable": false
+                  "nullable": true
                 },
                 "requiredSkills": {
                   "codecId": "pg/text@1",
@@ -757,6 +931,7 @@
               },
               "foreignKeys": [
                 {
+                  "onDelete": "cascade",
                   "source": {
                     "columns": [
                       "userId"
@@ -905,6 +1080,7 @@
               },
               "foreignKeys": [
                 {
+                  "onDelete": "cascade",
                   "source": {
                     "columns": [
                       "userId"
@@ -931,6 +1107,143 @@
                 {
                   "columns": [
                     "userId"
+                  ]
+                }
+              ]
+            },
+            "Recommendation": {
+              "checks": [
+                {
+                  "expression": "\"status\" IN ('new', 'applied', 'dismissed')",
+                  "name": "Recommendation_status_check_ac28c769",
+                  "prefix": "Recommendation_status_check"
+                }
+              ],
+              "columns": {
+                "createdAt": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "jobId": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "score": {
+                  "codecId": "pg/float8@1",
+                  "nativeType": "float8",
+                  "nullable": false
+                },
+                "status": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "new"
+                  },
+                  "nativeType": "text",
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "RecommendationStatus",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "updatedAt": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "userId": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "userId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Recommendation"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "User"
+                  }
+                },
+                {
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "jobId"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Recommendation"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Job"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "jobId"
+                  ],
+                  "name": "Recommendation_jobId_idx_623c8f77",
+                  "prefix": "Recommendation_jobId_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "userId"
+                  ],
+                  "name": "Recommendation_userId_idx_a489d58a",
+                  "prefix": "Recommendation_userId_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "userId",
+                    "status",
+                    "score"
+                  ],
+                  "name": "Recommendation_userId_status_score_idx_68241db6",
+                  "prefix": "Recommendation_userId_status_score_idx",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "userId",
+                    "jobId"
                   ]
                 }
               ]
@@ -992,16 +1305,26 @@
                 }
               ]
             }
+          },
+          "valueSet": {
+            "RecommendationStatus": {
+              "kind": "valueSet",
+              "values": [
+                "new",
+                "applied",
+                "dismissed"
+              ]
+            }
           }
         },
         "id": "public",
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "527cc8abf28c9322fe6e40007e3f3a4e3d3c3136a0a8a82e8f0ce77982761ccd"
+    "storageHash": "decd8dd5dc949e1a3d473d6e4b7dbe1e5b2e655b3491edd3450e3ab8abbc8388"
   },
   "execution": {
-    "executionHash": "11469190c5d4f238a326038e7c1fdc5f2ca4eec11484f72fc874b0ada2c433b6",
+    "executionHash": "c2bde08e36519da399f21df0d33ccbd7bef9a7f025c06bd1f6bb0c4778c90be8",
     "mutations": {
       "defaults": [
         {
@@ -1078,6 +1401,32 @@
           },
           "ref": {
             "entry": "Profile",
+            "field": "updatedAt",
+            "namespace": "public"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "uuidv4",
+            "kind": "generator"
+          },
+          "ref": {
+            "entry": "Recommendation",
+            "field": "id",
+            "namespace": "public"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "timestampNow",
+            "kind": "generator"
+          },
+          "onUpdate": {
+            "id": "timestampNow",
+            "kind": "generator"
+          },
+          "ref": {
+            "entry": "Recommendation",
             "field": "updatedAt",
             "namespace": "public"
           }

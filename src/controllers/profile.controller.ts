@@ -2,6 +2,8 @@ import { db } from "../prisma/db";
 import type { Request, Response, NextFunction } from "express";
 import { profileSchema } from "../validators/profile.validator";
 import { generateRecommendations } from "../services/recommender";
+import { fetchAndStoreJobsForProfile } from "../services/jobIngestion";
+import { pushUnindexedJobs } from "../services/aiIndexer";
 
 export const createProfile = async (
   req: Request,
@@ -91,9 +93,22 @@ export const createProfile = async (
     });
 
     // 7. Start recommendation generation without waiting for it.
-    void generateRecommendations(authenticatedUserId).catch((err) => {
-      console.error("Background recommendation generation failed:", err);
-    });
+    void (async () => {
+      try {
+        const primaryRole = roles?.[0] || "AI Engineer";
+        const location = workLocation || "Remote";
+
+        await fetchAndStoreJobsForProfile(primaryRole, location);
+
+        await pushUnindexedJobs();
+
+        await generateRecommendations(authenticatedUserId);
+
+        console.log(`Background pipeline finished for: ${authenticatedUserId}`);
+      } catch (err) {
+        console.log("Background pipeline failed.", err);
+      }
+    })();
 
     // 8. Return the created profile.
     return res.status(201).json({
@@ -213,9 +228,22 @@ export const updateProfile = async (
       ...updateData,
     });
 
-    void generateRecommendations(userId).catch((err) => {
-      console.error("Background recommendation generation failed:", err);
-    });
+    void (async () => {
+      try {
+        const primaryRole = roles?.[0] || "AI Engineer";
+        const location = workLocation || "Remote";
+
+        await fetchAndStoreJobsForProfile(primaryRole, location);
+
+        await pushUnindexedJobs();
+
+        await generateRecommendations(userId);
+
+        console.log(`Background pipeline finished for: ${userId}`);
+      } catch (err) {
+        console.log("Background pipeline failed.", err);
+      }
+    })();
 
     //give response to client//
     return res.status(200).json({

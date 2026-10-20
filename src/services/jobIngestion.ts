@@ -7,7 +7,8 @@ const fetchAndStoreJobs = async () => {
   const apiKey = process.env.JSEARCH_API_KEY;
 
   if (!apiKey) {
-    throw new Error("API KEY not found.");
+    console.error("API KEY not found.");
+    return;
   }
 
   try {

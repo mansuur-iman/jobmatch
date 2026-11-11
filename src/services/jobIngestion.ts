@@ -4,6 +4,7 @@ export const fetchAndStoreJobsForProfile = async (
   primaryRole: string,
   location: string = "Remote",
 ) => {
+  const max_jobs = 10;
   //validate params//
   if (!primaryRole || !location) {
     console.error("Params not provided.");
@@ -42,7 +43,7 @@ export const fetchAndStoreJobsForProfile = async (
     const result = await response.json();
 
     //create a job list//
-    const jobList = result.data || [];
+    const jobList = (result.data || []).slice(0, max_jobs);
 
     let savedCount = 0;
 

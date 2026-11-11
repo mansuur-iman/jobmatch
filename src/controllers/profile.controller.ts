@@ -5,6 +5,8 @@ import { generateRecommendations } from "../services/recommender";
 import { fetchAndStoreJobsForProfile } from "../services/jobIngestion";
 import { pushUnindexedJobs } from "../services/aiIndexer";
 
+import { z } from "zod";
+
 export const createProfile = async (
   req: Request,
   res: Response,
@@ -34,7 +36,7 @@ export const createProfile = async (
 
     if (!result.success) {
       return res.status(400).json({
-        error: result.error.flatten().fieldErrors,
+        error: z.treeifyError(result.error),
       });
     }
 
@@ -187,9 +189,7 @@ export const updateProfile = async (
     //validate profile updating data//
     const result = updateprofileSchema.safeParse(req.body);
     if (!result.success) {
-      return res
-        .status(400)
-        .json({ error: result.error?.flatten().fieldErrors });
+      return res.status(400).json({ error: z.treeifyError(result.error) });
     }
 
     const {
@@ -249,6 +249,7 @@ export const updateProfile = async (
     return res.status(200).json({
       message: "Profile updated successfully.",
       profile: updatedProfile,
+      recommendationStatus: "processing",
     });
   } catch (err) {
     console.error("Error in updating profile.", err);
@@ -281,7 +282,7 @@ export const getRecommendations = async (
     //select the jobs//
     const jobIds = topRecommendations.map((r) => r.jobId);
     const jobsFound = jobIds.length
-      ? await db.orm.public.Job.where({ id: { in: jobIds } }).all()
+      ? await db.orm.public.Job.where((job) => job.id.in(jobIds)).all()
       : [];
 
     const jobsById = new Map(jobsFound.map((job) => [job.id, job]));

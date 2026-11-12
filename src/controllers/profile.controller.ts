@@ -228,14 +228,31 @@ export const updateProfile = async (
       ...updateData,
     });
 
+    if (!updatedProfile) {
+      return res.status(404).json({ error: "Profile not found." });
+    }
+
+    const discoveryPrefernceChanged =
+      roles !== undefined || workLocation !== undefined;
+
     void (async () => {
       try {
-        const primaryRole = roles?.[0] || "AI Engineer";
-        const location = workLocation || "Remote";
+        if (
+          discoveryPrefernceChanged &&
+          updatedProfile.roles &&
+          updatedProfile.workLocation
+        ) {
+          const primaryRole = updatedProfile.roles[0];
+          const location = updatedProfile.workLocation;
 
-        await fetchAndStoreJobsForProfile(primaryRole, location);
+          if (!primaryRole || !location) {
+            throw new Error("Profile is missing job discovery preferences.");
+          }
 
-        await pushUnindexedJobs();
+          await fetchAndStoreJobsForProfile(primaryRole, location);
+
+          await pushUnindexedJobs();
+        }
 
         await generateRecommendations(userId);
 

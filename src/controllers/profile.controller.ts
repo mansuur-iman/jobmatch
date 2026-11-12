@@ -204,6 +204,7 @@ export const updateProfile = async (
       roles,
       languages,
       workLocation,
+      projects,
     } = result?.data;
 
     //update profile data//
@@ -219,6 +220,7 @@ export const updateProfile = async (
       ...(roles !== undefined && { roles }),
       ...(experience !== undefined && { experience }),
       ...(certifications !== undefined && { certifications }),
+      ...(projects !== undefined && { projects }),
     };
 
     //update user profile in db//

@@ -6,7 +6,7 @@ import express, {
 import authRouter from "./routes/auth.routes";
 import profileRouter from "./routes/profile.routes";
 import { analysisRouter } from "./routes/analysis.routes";
-import { aiRouter } from "./routes/ai.route";
+import { recommendationRouter } from "./routes/recommendation.routes";
 
 const app = express();
 
@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/profile", profileRouter);
 app.use("/api/v1/job", analysisRouter);
-app.use("/api/v1/internal", aiRouter);
+app.use("/api/v1/recommendation", recommendationRouter);
 
 //error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {

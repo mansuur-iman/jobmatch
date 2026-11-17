@@ -5,15 +5,36 @@ interface Props {
   value: string[];
   onChange: (next: string[]) => void;
   placeholder?: string;
+  minLength?: number; // per-tag limits, mirroring the backend zod schema
+  maxLength?: number;
 }
 
-/** Type a skill and press Enter or comma to add it; click × to remove. */
-export function TagInput({ value, onChange, placeholder }: Props) {
+/** Type a tag and press Enter or comma to add it; click × to remove. */
+export function TagInput({
+  value,
+  onChange,
+  placeholder,
+  minLength,
+  maxLength,
+}: Props) {
   const [draft, setDraft] = useState("");
+  const [hint, setHint] = useState<string | null>(null);
 
   function commit(raw: string) {
     const tag = raw.trim();
-    if (!tag) return;
+    if (!tag) {
+      setHint(null);
+      return;
+    }
+    if (minLength !== undefined && tag.length < minLength) {
+      setHint(`Each item must be at least ${minLength} characters.`);
+      return;
+    }
+    if (maxLength !== undefined && tag.length > maxLength) {
+      setHint(`Each item can be at most ${maxLength} characters.`);
+      return;
+    }
+    setHint(null);
     if (!value.some((v) => v.toLowerCase() === tag.toLowerCase())) {
       onChange([...value, tag]);
     }
@@ -30,26 +51,32 @@ export function TagInput({ value, onChange, placeholder }: Props) {
   }
 
   return (
-    <div className="tag-input">
-      {value.map((tag) => (
-        <span key={tag} className="tag">
-          {tag}
-          <button
-            type="button"
-            aria-label={`Remove ${tag}`}
-            onClick={() => onChange(value.filter((v) => v !== tag))}
-          >
-            ×
-          </button>
-        </span>
-      ))}
-      <input
-        value={draft}
-        onChange={(e) => setDraft(e.target.value)}
-        onKeyDown={onKeyDown}
-        onBlur={() => commit(draft)}
-        placeholder={value.length ? "" : placeholder}
-      />
-    </div>
+    <>
+      <div className="tag-input">
+        {value.map((tag) => (
+          <span key={tag} className="tag">
+            {tag}
+            <button
+              type="button"
+              aria-label={`Remove ${tag}`}
+              onClick={() => onChange(value.filter((v) => v !== tag))}
+            >
+              ×
+            </button>
+          </span>
+        ))}
+        <input
+          value={draft}
+          onChange={(e) => {
+            setDraft(e.target.value);
+            setHint(null);
+          }}
+          onKeyDown={onKeyDown}
+          onBlur={() => commit(draft)}
+          placeholder={value.length ? "" : placeholder}
+        />
+      </div>
+      {hint && <div className="field-hint">{hint}</div>}
+    </>
   );
 }

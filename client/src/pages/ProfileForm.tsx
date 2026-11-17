@@ -234,6 +234,8 @@ export function ProfileForm() {
           <TagInput
             value={form.skills}
             onChange={(v) => set("skills", v)}
+            minLength={2}
+            maxLength={30}
             placeholder="e.g. React, PostgreSQL — press Enter to add"
           />
         </label>
@@ -242,6 +244,8 @@ export function ProfileForm() {
           <TagInput
             value={form.certifications}
             onChange={(v) => set("certifications", v)}
+            minLength={2}
+            maxLength={100}
             placeholder="Optional — press Enter to add"
           />
         </label>
@@ -250,6 +254,8 @@ export function ProfileForm() {
           <TagInput
             value={form.languages}
             onChange={(v) => set("languages", v)}
+            minLength={2}
+            maxLength={30}
             placeholder="e.g. English, Swahili, German"
           />
         </label>
@@ -294,6 +300,7 @@ export function ProfileForm() {
               <input
                 value={p.link}
                 onChange={(e) => updateProject(i, { link: e.target.value })}
+                placeholder="https://..."
               />
             </label>
           </div>
@@ -372,6 +379,8 @@ export function ProfileForm() {
           <TagInput
             value={form.roles}
             onChange={(v) => set("roles", v)}
+            minLength={2}
+            maxLength={50}
             placeholder="e.g. Backend Engineer, Full-stack Developer"
           />
         </label>

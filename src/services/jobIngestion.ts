@@ -34,8 +34,9 @@ export const fetchAndStoreJobsForProfile = async (
     });
 
     if (!response.ok) {
+      const body = await response.text();
       throw new Error(
-        `Job search API responded with error status: ${response.status} `,
+        `Job search API responded with error status: ${response.status} ${body}`,
       );
     }
 

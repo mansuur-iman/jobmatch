@@ -19,14 +19,32 @@ export function setUnauthorizedHandler(fn: (() => void) | null) {
   onUnauthorized = fn;
 }
 
+// Joins messages from a list of strings or zod-style issues ({ message, path }).
+function listMessages(list: unknown): string | null {
+  if (!Array.isArray(list)) return null;
+  const msgs = list
+    .map((i) => (typeof i === "string" ? i : i?.message))
+    .filter((m): m is string => typeof m === "string" && m.length > 0);
+  return msgs.length ? msgs.join(" ") : null;
+}
+
 function extractMessage(data: any): string | null {
   const raw = data?.error ?? data?.message;
   if (typeof raw === "string") return raw;
-  if (raw && typeof raw === "object" && typeof raw.message === "string") return raw.message;
-  return null;
+  return (
+    listMessages(raw) ??
+    listMessages(raw?.issues) ??
+    listMessages(data?.issues) ??
+    listMessages(data?.errors) ??
+    (typeof raw?.message === "string" ? raw.message : null)
+  );
 }
 
-async function request<T>(method: string, path: string, body?: unknown): Promise<T> {
+async function request<T>(
+  method: string,
+  path: string,
+  body?: unknown,
+): Promise<T> {
   const headers: Record<string, string> = {};
   const token = localStorage.getItem(TOKEN_KEY);
   if (token) headers.Authorization = `Bearer ${token}`;
@@ -57,7 +75,10 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
 
   if (!res.ok) {
     if (res.status === 401 && !path.startsWith("/auth/")) onUnauthorized?.();
-    throw new ApiError(extractMessage(data) ?? `Request failed (${res.status})`, res.status);
+    throw new ApiError(
+      extractMessage(data) ?? `Request failed (${res.status})`,
+      res.status,
+    );
   }
 
   return data as T;
@@ -65,12 +86,17 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
 
 export const api = {
   get: <T = any>(path: string) => request<T>("GET", path),
-  post: <T = any>(path: string, body?: unknown) => request<T>("POST", path, body),
-  patch: <T = any>(path: string, body?: unknown) => request<T>("PATCH", path, body),
+  post: <T = any>(path: string, body?: unknown) =>
+    request<T>("POST", path, body),
+  patch: <T = any>(path: string, body?: unknown) =>
+    request<T>("PATCH", path, body),
 };
 
 /** Human-readable message for any thrown value. */
-export function errorMessage(err: unknown, fallback = "Something went wrong"): string {
+export function errorMessage(
+  err: unknown,
+  fallback = "Something went wrong",
+): string {
   if (err instanceof Error && err.message) return err.message;
   return fallback;
 }

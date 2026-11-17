@@ -39,7 +39,10 @@ export const generateRecommendations = async (userId: string) => {
   });
 
   if (!response.ok) {
-    throw new Error(`AI service responded with status: ${response.status}`);
+    const body = await response.text();
+    throw new Error(
+      `AI service responded with status: ${response.status} ${body}`,
+    );
   }
 
   const data = await response.json();

@@ -13,7 +13,7 @@ export const fetchAndStoreJobsForProfile = async (
   //build searchQuery//
   const searchQuery = `${primaryRole} ${location}`.trim();
   //fetching url//
-  const url = `https://jsearch.p.rapidapi.com/search?query=${encodeURIComponent(searchQuery)}&num_pages=1`;
+  const url = `https://jsearch.p.rapidapi.com/search-v2?query=${encodeURIComponent(searchQuery)}&num_pages=1`;
   //api key//
   const apiKey = process.env.JSEARCH_API_KEY;
 

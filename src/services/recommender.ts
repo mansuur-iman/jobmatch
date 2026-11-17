@@ -29,7 +29,7 @@ export const generateRecommendations = async (userId: string) => {
   }
 
   // generate recommendations//
-  const response = await fetch(`${aiServiceUrl}/api/v1/recommendations`, {
+  const response = await fetch(`${aiServiceUrl}/api/v1/recommendation`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

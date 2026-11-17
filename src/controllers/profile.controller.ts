@@ -1,6 +1,9 @@
 import { db } from "../prisma/db";
 import type { Request, Response, NextFunction } from "express";
-import { profileSchema } from "../validators/profile.validator";
+import {
+  profileSchema,
+  updateProfileSchema,
+} from "../validators/profile.validator";
 import { generateRecommendations } from "../services/recommender";
 import { fetchAndStoreJobsForProfile } from "../services/jobIngestion";
 import { pushUnindexedJobs } from "../services/aiIndexer";
@@ -183,11 +186,8 @@ export const updateProfile = async (
       return res.status(404).json({ error: "User not found." });
     }
 
-    //update profile schema//
-    const updateprofileSchema = profileSchema.partial();
-
     //validate profile updating data//
-    const result = updateprofileSchema.safeParse(req.body);
+    const result = updateProfileSchema.safeParse(req.body);
     if (!result.success) {
       return res.status(400).json({ error: z.treeifyError(result.error) });
     }

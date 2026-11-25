@@ -134,5 +134,8 @@ npm test
 - **Service-to-service auth:** the AI service rejects any request without a valid `X-API-Key` header. The key lives only in server environments and is never shipped to the client.
 - **Secrets:** all credentials come from environment variables. `.env` is git-ignored and `.env.example` documents the required names.
 
+## AUTHOR
+iman built as a personal project
+
 
 Iman, built as a portfolio project. <!-- TODO: add LinkedIn / portfolio link -->

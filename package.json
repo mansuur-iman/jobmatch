@@ -1,5 +1,5 @@
 {
-  "name": "project-db",
+  "name": "jobmatch",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,16 +12,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mansuur-iman/project-db.git"
+    "url": "git+https://github.com/mansuur-iman/jobmatch.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "bugs": {
-    "url": "https://github.com/mansuur-iman/project-db/issues"
+    "url": "https://github.com/mansuur-iman/jobmatch/issues"
   },
-  "homepage": "https://github.com/mansuur-iman/project-db#readme",
+  "homepage": "https://github.com/mansuur-iman/jobmatch#readme",
   "dependencies": {
     "@prisma/client": "^7.10.0",
     "@prisma/orm-postgres": "^8.0.0-rc.13",

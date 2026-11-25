@@ -3,12 +3,15 @@ import express, {
   type Response,
   type NextFunction,
 } from "express";
+import cors from "cors";
+
 import authRouter from "./routes/auth.routes";
 import profileRouter from "./routes/profile.routes";
 import { analysisRouter } from "./routes/analysis.routes";
 import { recommendationRouter } from "./routes/recommendation.routes";
 
 const app = express();
+app.use(cors());
 
 //middleware//
 app.use(express.json());

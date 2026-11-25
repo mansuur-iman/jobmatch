@@ -44,7 +44,8 @@ export const fetchAndStoreJobsForProfile = async (
     const result = await response.json();
 
     //create a job list//
-    const jobList = (result.data || []).slice(0, max_jobs);
+    const jobList = (result.data?.jobs ?? []).slice(0, max_jobs);
+    console.log(JSON.stringify(jobList[0], null, 2));
 
     let savedCount = 0;
 
@@ -82,7 +83,9 @@ export const fetchAndStoreJobsForProfile = async (
         company: job.employer_name,
         companyLogo: job.employer_logo ?? "",
         companyWebsite: job.employer_website ?? "",
-        postedAt: Temporal.Instant.from(job.job_posted_at_datetime_utc),
+        postedAt: job.job_posted_at_datetime_utc
+          ? Temporal.Instant.from(job.job_posted_at_datetime_utc)
+          : Temporal.Now.instant(),
         aiIndexed: false,
       });
       savedCount++;

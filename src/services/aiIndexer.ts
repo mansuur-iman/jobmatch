@@ -25,7 +25,7 @@ export const pushUnindexedJobs = async () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ jobs: payload }),
-      signal: AbortSignal.timeout(30000),
+      signal: AbortSignal.timeout(120_000),
     });
 
     if (!res.ok) {

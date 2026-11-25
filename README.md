@@ -135,6 +135,4 @@ npm test
 - **Secrets:** all credentials come from environment variables. `.env` is git-ignored and `.env.example` documents the required names.
 
 
-## Author
-
 Iman, built as a portfolio project. <!-- TODO: add LinkedIn / portfolio link -->

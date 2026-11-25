@@ -2,6 +2,9 @@
 
 AI-powered job recommendation platform. Users build a profile, the system pulls in relevant job listings, and an AI matching service ranks them against the profile so users see the best fits first and can track their application status.
 
+## LIVE DEMO
+https://client-eosin-mu-85.vercel.app/
+
 **Repositories**
 
 | Repo | Role |

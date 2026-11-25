@@ -1,4 +1,5 @@
 import { db } from ".././prisma/db";
+import { aiFetch } from "./aiClient";
 let running = false;
 export const pushUnindexedJobs = async () => {
   if (running) return;
@@ -19,7 +20,7 @@ export const pushUnindexedJobs = async () => {
       location: job.location,
     }));
 
-    const res = await fetch(`${process.env.AISERVICE_URL}/api/v1/jobs/index`, {
+    const res = await aiFetch("/api/v1/jobs/index", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

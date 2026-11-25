@@ -1,6 +1,7 @@
 import { db } from ".././prisma/db";
 import type { Request, Response, NextFunction } from "express";
 import { jobSchema } from "../validators/job.validator";
+import { aiFetch } from "../services/aiClient";
 
 export const analyzeJob = async (
   req: Request,
@@ -47,7 +48,7 @@ export const analyzeJob = async (
 
     let aiResult: any;
     try {
-      const aiRes = await fetch(`${process.env.AI_SERVICE_URL}/api/v1/match`, {
+      const aiRes = await aiFetch("/api/v1/match", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

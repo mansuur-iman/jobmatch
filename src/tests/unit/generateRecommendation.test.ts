@@ -64,11 +64,12 @@ const mockAiResponse = (body: unknown, ok = true, status = 200) => {
 
 describe("generateRecommendations", () => {
   let warnSpy: jest.SpiedFunction<typeof console.warn>;
-  const originalUrl = process.env.AISERVICE_URL;
+  const originalUrl = process.env.AI_SERVICE_URL;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    process.env.AISERVICE_URL = "http://ai.test";
+    process.env.AI_SERVICE_URL = "http://ai.test";
+    process.env.AI_SERVICE_API_KEY = "test-key";
     mockFetch.mockReset();
     globalThis.fetch = mockFetch as any;
 
@@ -84,8 +85,8 @@ describe("generateRecommendations", () => {
   });
 
   afterEach(() => {
-    if (originalUrl === undefined) delete process.env.AISERVICE_URL;
-    else process.env.AISERVICE_URL = originalUrl;
+    if (originalUrl === undefined) delete process.env.AI_SERVICE_URL;
+    else process.env.AI_SERVICE_URL = originalUrl;
     jest.restoreAllMocks();
   });
 
@@ -101,8 +102,8 @@ describe("generateRecommendations", () => {
       expect(mockFetch).not.toHaveBeenCalled();
     });
 
-    it("throws when AISERVICE_URL is not defined", async () => {
-      delete process.env.AISERVICE_URL;
+    it("throws when AI_SERVICE_URL is not defined", async () => {
+      delete process.env.AI_SERVICE_URL;
 
       await expect(generateRecommendations(USER_ID)).rejects.toThrow(
         "Ai service url not defined.",

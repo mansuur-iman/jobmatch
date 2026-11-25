@@ -1,4 +1,5 @@
 import { db } from ".././prisma/db";
+import { aiFetch } from "./aiClient";
 
 export const generateRecommendations = async (userId: string) => {
   //find user profile//
@@ -23,13 +24,13 @@ export const generateRecommendations = async (userId: string) => {
     .map((recommendation) => recommendation.jobId);
 
   //check the AI service urll//
-  const aiServiceUrl = process.env.AISERVICE_URL;
+  const aiServiceUrl = process.env.AI_SERVICE_URL;
   if (!aiServiceUrl) {
     throw new Error("Ai service url not defined.");
   }
 
   // generate recommendations//
-  const response = await fetch(`${aiServiceUrl}/api/v1/recommendation`, {
+  const response = await aiFetch("/api/v1/recommendation", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

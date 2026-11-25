@@ -57,11 +57,12 @@ const mockAiResponse = (body: unknown, ok = true, status = 200) => {
 describe("pushUnindexedJobs", () => {
   let warnSpy: jest.SpiedFunction<typeof console.warn>;
   let errorSpy: jest.SpiedFunction<typeof console.error>;
-  const originalUrl = process.env.AISERVICE_URL;
+  const originalUrl = process.env.AI_SERVICE_URL;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    process.env.AISERVICE_URL = "http://ai.test";
+    process.env.AI_SERVICE_URL = "http://ai.test";
+    process.env.AI_SERVICE_API_KEY = "test-key";
     mockFetch.mockReset();
     globalThis.fetch = mockFetch as any;
     mockAll.mockResolvedValue([makeJob()]);
@@ -71,7 +72,7 @@ describe("pushUnindexedJobs", () => {
   });
 
   afterEach(() => {
-    process.env.AISERVICE_URL = originalUrl;
+    process.env.AI_SERVICE_URL = originalUrl;
     jest.restoreAllMocks();
   });
 

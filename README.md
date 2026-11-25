@@ -9,15 +9,13 @@ AI-powered job recommendation platform. Users build a profile, the system pulls 
 | [jobmatch](https://github.com/mansuur-iman/jobmatch) (this repo) | React client + Express/TypeScript API |
 | [jobmatch-ai](https://github.com/mansuur-iman/jobmatch-ai) | FastAPI service: embeddings, vector search, recommendation logic |
 
-<!-- TODO: add a screenshot or short GIF of the app here -->
-
 ## Features
 
 - Account registration and login with token-based authentication
 - User profile (skills, experience, job preferences)
 - Job ingestion: fetches listings from an external jobs API based on the user's profile
 - AI matching: jobs are chunked, embedded and indexed by the AI service, then retrieved by similarity to the profile
-- Recommendation status tracking (for example saved, applied, rejected) <!-- TODO: confirm the exact statuses -->
+- Recommendation status tracking (for example saved, applied, rejected)
 - Automated unit and integration tests for auth, profile and recommendation status
 
 ## Architecture
@@ -47,13 +45,13 @@ The client never talks to the AI service directly. Only the API does, using a se
 | API | Node.js, Express, TypeScript |
 | Database | PostgreSQL with Prisma |
 | AI service | Python, FastAPI, Google Gemini, vector store (see the jobmatch-ai repo) |
-| Testing | Jest + Supertest|
+| Testing | Jest + Supertest |
 
 ## Project structure
 
 ```
 jobmatch/
-├── client/            # React app   <!-- TODO: confirm folder name -->
+├── client/            # React app
 ├── src/
 │   ├── services/      # job ingestion, AI indexing
 │   ├── tests/         # unit + integration tests
@@ -76,7 +74,7 @@ jobmatch/
 git clone git@github.com:mansuur-iman/jobmatch.git
 cd jobmatch
 npm install
-cd client && npm install && cd ..  
+cd client && npm install && cd ..
 ```
 
 ### 2. Configure environment
@@ -88,9 +86,11 @@ cp .env.example .env
 | Variable | Description |
 | --- | --- |
 | `DATABASE_URL` | PostgreSQL connection string |
-| `JWT_SECRET` | Secret used to sign auth tokens  |
+| `JWT_SECRET` | Secret used to sign auth tokens |
 | `AI_SERVICE_URL` | Base URL of the AI service, e.g. `http://localhost:8000` |
 | `AI_SERVICE_API_KEY` | Shared secret sent to the AI service. Must match the AI service's value |
+
+Generate secrets with `openssl rand -hex 32`. Never commit `.env`.
 
 ### 3. Set up the database
 
@@ -105,7 +105,7 @@ npx prisma migrate dev
 uvicorn main:app --reload --port 8000
 
 # API
-npm run dev          
+npm run dev
 
 # Client
 cd client && npm run dev
@@ -114,7 +114,7 @@ cd client && npm run dev
 ### 5. Test
 
 ```bash
-npm test             
+npm test
 ```
 
 ## API overview
@@ -130,12 +130,10 @@ npm test
 ## Security
 
 - **Authentication:** JWT on all user routes. Passwords are hashed before storage.
-- **CORS:** only origins listed in `CORS_ORIGINS` can call the API from a browser.
+- **CORS:** enabled so the browser client can call the API. Access to data is enforced by JWT, not by origin.
 - **Service-to-service auth:** the AI service rejects any request without a valid `X-API-Key` header. The key lives only in server environments and is never shipped to the client.
 - **Secrets:** all credentials come from environment variables. `.env` is git-ignored and `.env.example` documents the required names.
 
-## AUTHOR
-iman built as a personal project
+## Author
 
-
-Iman, built as a portfolio project. <!-- TODO: add LinkedIn / portfolio link -->
+Iman
